@@ -15,6 +15,15 @@ function createObject<T>(obj: T): T {
 
 type Jwt = { header?: string; payload?: string; signature?: string };
 
+function tryDecode(value: string): string | null {
+  try {
+    return decode(value);
+  } catch (err) {
+    console.warn(err.message);
+    return null;
+  }
+}
+
 function encodeObject(obj: Jwt): string {
   return [
     obj.header && encode(obj.header),
@@ -36,20 +45,20 @@ function parseJwt(jwt: string): Jwt | null {
 
   if (!encodedPayload && !signature) {
     return createObject({
-      payload: decode(encodedHeader),
+      payload: tryDecode(encodedHeader),
     });
   }
 
   if (!signature) {
     return createObject({
-      header: decode(encodedHeader),
-      payload: decode(encodedPayload),
+      header: tryDecode(encodedHeader),
+      payload: tryDecode(encodedPayload),
     });
   }
 
   return createObject({
-    header: decode(encodedHeader),
-    payload: decode(encodedPayload),
+    header: tryDecode(encodedHeader),
+    payload: tryDecode(encodedPayload),
     signature,
   });
 }
@@ -155,7 +164,7 @@ export default function Home() {
 
           <div className={styles.card}>
             <label htmlFor="header">
-              <h3>Header</h3>
+              <h3>Header {header === 'null' && 'Unparseable'}</h3>
             </label>
             <AutoResizeTextArea
               id="header"
@@ -168,7 +177,7 @@ export default function Home() {
           </div>
           <div className={styles.card}>
             <label htmlFor="payload">
-              <h3>Payload</h3>
+              <h3>Payload {payload === 'null' && 'Unparseable'}</h3>
             </label>
             <AutoResizeTextArea
               id="payload"
@@ -181,7 +190,7 @@ export default function Home() {
           </div>
           <div className={styles.card}>
             <label htmlFor="signature">
-              <h3>Signature</h3>
+              <h3>Signature {signature === 'null' && 'Unparseable'}</h3>
             </label>
             <AutoResizeTextArea
               id="signature"
