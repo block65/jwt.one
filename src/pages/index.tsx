@@ -166,7 +166,7 @@ export default function Home() {
               className={styles.input}
               value={jwt}
               placeholder="Empty"
-              onChange={(e) => decodeAndSetJwt(e.currentTarget.value.trim())}
+              onChange={(e) => decodeAndSetJwt(e.currentTarget.value)}
             />
           </div>
 
@@ -180,7 +180,7 @@ export default function Home() {
               className={classCat(styles.input, styles.header)}
               value={header || ''}
               placeholder="Empty"
-              onChange={(e) => setHeaderAndEncode(e.currentTarget.value.trim())}
+              onChange={(e) => setHeaderAndEncode(e.currentTarget.value)}
             />
           </div>
           <div className={styles.card}>
@@ -193,9 +193,7 @@ export default function Home() {
               className={classCat(styles.input, styles.payload)}
               value={payload || ''}
               placeholder="Empty"
-              onChange={(e) =>
-                setPayloadAndEncode(e.currentTarget.value.trim())
-              }
+              onChange={(e) => setPayloadAndEncode(e.currentTarget.value)}
             />
           </div>
           <div className={styles.card}>
@@ -208,9 +206,7 @@ export default function Home() {
               className={classCat(styles.input, styles.signature)}
               value={signature || ''}
               placeholder="Empty"
-              onChange={(e) =>
-                setSignatureAndEncode(e.currentTarget.value.trim())
-              }
+              onChange={(e) => setSignatureAndEncode(e.currentTarget.value)}
             />
           </div>
         </div>

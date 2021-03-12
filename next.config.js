@@ -52,15 +52,6 @@ const nextConfig = {
           },
         ],
       },
-      {
-        source: '/api/whats-new',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, s-max-age=3600',
-          },
-        ],
-      },
     ];
   },
 };
