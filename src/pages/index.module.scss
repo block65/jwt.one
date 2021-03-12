@@ -136,6 +136,11 @@
       background: var(--brand);
       color: white;
     }
+
+    &.jwt, &.signature {
+      word-break: break-all
+    }
+
   }
 
 }

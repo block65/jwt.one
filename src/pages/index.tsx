@@ -146,7 +146,7 @@ export default function Home() {
               id="jwt"
               autoFocus
               spellCheck={false}
-              className={styles.input}
+              className={classCat(styles.input, styles.jwt)}
               value={jwt}
               placeholder="Empty"
               onChange={(e) => decodeAndSetJwt(e.currentTarget.value)}
