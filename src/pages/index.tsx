@@ -146,9 +146,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h2 className={styles.title}>
-          <a href="https://jwt.one">jwt.one</a>
-        </h2>
+        <h2 className={styles.title}>jwt.one</h2>
 
         <p className={styles.description}>
           Super fast online JWT encoder and decoder

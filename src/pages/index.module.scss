@@ -1,4 +1,4 @@
-$color: #bf007f;
+@use 'sass-mq' as mq;
 
 .container {
   min-height: 100vh;
@@ -16,12 +16,19 @@ $color: #bf007f;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90em;
+  max-width: 75em;
+  width: 100%;
 
-  @media (max-width: 85em) {
-    padding: 5rem 2em;
-    width: 100vw;
+  h2 {
+    color: var(--brand);
   }
+
+
+  @include mq.mq($from: tablet) {
+    //padding: 5rem 2em;
+    //width: 100vw;
+  }
+
 
 }
 
@@ -53,7 +60,7 @@ $color: #bf007f;
   font-size: 4rem;
 
   a {
-    color: $color;
+    color: var(--brand);
     text-decoration: none;
 
     &:hover,
@@ -98,8 +105,8 @@ $color: #bf007f;
   &:focus,
   &:focus-within,
   &:active {
-    color: $color;
-    border-color: $color;
+    color: var(--brand);
+    border-color: var(--brand);
   }
 
   label {
@@ -124,8 +131,9 @@ $color: #bf007f;
     Bitstream Vera Sans Mono, Courier New, monospace;
     min-height: 3em;
     resize: vertical;
+
     &::selection {
-      background: $color;
+      background: var(--brand);
       color: white;
     }
   }
