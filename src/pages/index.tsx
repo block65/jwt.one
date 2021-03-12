@@ -78,7 +78,9 @@ function tryNormalise(value: string): string {
 }
 
 export default function Home() {
-  const [jwt, setJwt] = useState('');
+  const [jwt, setJwt] = useState(
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
+  );
   const [payload, setPayload] = useState<string | null>(null);
   const [header, setHeader] = useState<string | null>(null);
   const [signature, setSignature] = useState<string | null>(null);
@@ -134,8 +136,11 @@ export default function Home() {
 
         <div className={styles.grid}>
           <div className={styles.card}>
-            <h3>JWT</h3>
+            <label htmlFor="jwt">
+              <h3>JWT</h3>
+            </label>
             <textarea
+              id="jwt"
               autoFocus
               spellCheck={false}
               className={styles.input}
@@ -145,8 +150,11 @@ export default function Home() {
           </div>
 
           <div className={styles.card}>
-            <h3>Header</h3>
+            <label htmlFor="header">
+              <h3>Header</h3>
+            </label>
             <textarea
+              id="header"
               spellCheck={false}
               className={classCat(styles.output, styles.header)}
               value={header || ''}
@@ -154,8 +162,11 @@ export default function Home() {
             />
           </div>
           <div className={styles.card}>
-            <h3>Payload</h3>
+            <label htmlFor="payload">
+              <h3>Payload</h3>
+            </label>
             <textarea
+              id="payload"
               spellCheck={false}
               className={classCat(styles.output, styles.payload)}
               value={payload || ''}
@@ -165,8 +176,11 @@ export default function Home() {
             />
           </div>
           <div className={styles.card}>
-            <h3>Signature</h3>
+            <label htmlFor="signature">
+              <h3>Signature</h3>
+            </label>
             <textarea
+              id="signature"
               spellCheck={false}
               className={classCat(styles.output, styles.footer)}
               value={signature || ''}
@@ -179,7 +193,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        Made possible by our friends at{' '}
+        Made possible by our lovely friends at{' '}
         <a href="https://www.colacube.io?utm_source=jwt.one">Colacube</a>
       </footer>
     </div>
