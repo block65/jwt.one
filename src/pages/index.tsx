@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useCallback, useEffect, useState } from 'react';
 import { classCat } from '@block65/classcat';
+import { encode, decode } from 'universal-base64url';
 import favicon16 from '../../public/favicon-16x16.png';
 import favicon32 from '../../public/favicon-32x32.png';
 import appleTouchIcon from '../../public/apple-touch-icon.png';
@@ -12,28 +13,12 @@ function createObject<T>(obj: T): T {
   return Object.assign(Object.create(null), obj);
 }
 
-export function toBase64Url(value: string): string {
-  return btoa(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-}
-
-export function fromBase64Url(value: string): string {
-  return atob(value.replace(/-/g, '+').replace(/_/g, '/'));
-}
-
 type Jwt = { header?: string; payload?: string; signature?: string };
-
-function decode(encoded: string): string {
-  return decodeURIComponent(
-    fromBase64Url(encoded).replace(/(.)/g, (m, p) => {
-      return `%${p.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')}`;
-    }),
-  );
-}
 
 function encodeObject(obj: Jwt): string {
   return [
-    obj.header && toBase64Url(obj.header),
-    obj.payload && toBase64Url(obj.payload),
+    obj.header && encode(obj.header),
+    obj.payload && encode(obj.payload),
     obj.signature,
   ]
     .filter(Boolean)

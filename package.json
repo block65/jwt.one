@@ -13,7 +13,8 @@
     "next": "10.0.8",
     "next-images": "^1.7.0",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "universal-base64url": "^1.1.0"
   },
   "devDependencies": {
     "@block65/eslint-config": "4.0.0",
