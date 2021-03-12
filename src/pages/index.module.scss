@@ -96,6 +96,7 @@ $color: #bf007f;
 
   &:hover,
   &:focus,
+  &:focus-within,
   &:active {
     color: $color;
     border-color: $color;
@@ -123,6 +124,10 @@ $color: #bf007f;
     Bitstream Vera Sans Mono, Courier New, monospace;
     min-height: 3em;
     resize: vertical;
+    &::selection {
+      background: $color;
+      color: white;
+    }
   }
 
 }
