@@ -134,7 +134,7 @@ export default function Home() {
         <h2 className={styles.title}>jwt.one</h2>
 
         <p className={styles.description}>
-          Super fast online JWT encoder and decoder
+          Online JWT encoder and decoder. Optimized for speed
         </p>
 
         <div className={styles.grid}>
