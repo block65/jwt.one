@@ -1,7 +1,12 @@
 import Head from 'next/head';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { classCat } from '@block65/classcat';
+import favicon16 from '../../public/favicon-16x16.png';
+import favicon32 from '../../public/favicon-32x32.png';
+import appleTouchIcon from '../../public/apple-touch-icon.png';
 import styles from './index.module.scss';
+import { AutoResizeTextArea } from '../../lib/AutoResizeTextArea';
+import { useLocalStorageState } from '../../lib/use-localstorage-state';
 
 function createObject<T>(obj: T): T {
   return Object.assign(Object.create(null), obj);
@@ -36,62 +41,65 @@ function encodeObject(obj: Jwt): string {
 }
 
 function parseJwt(jwt: string): Jwt | null {
-  try {
-    if (!jwt) {
-      return {};
-    }
+  if (!jwt) {
+    return {};
+  }
 
-    const [encodedHeader = '', encodedPayload = '', signature = ''] = jwt.split(
-      '.',
-    );
+  const [encodedHeader = '', encodedPayload = '', signature = ''] = jwt.split(
+    '.',
+  );
 
-    if (!encodedPayload && !signature) {
-      return createObject({
-        payload: decode(encodedHeader),
-      });
-    }
+  if (!encodedPayload && !signature) {
+    return createObject({
+      payload: decode(encodedHeader),
+    });
+  }
 
-    if (!signature) {
-      return createObject({
-        header: decode(encodedHeader),
-        payload: decode(encodedPayload),
-      });
-    }
-
+  if (!signature) {
     return createObject({
       header: decode(encodedHeader),
       payload: decode(encodedPayload),
-      signature,
     });
-  } catch (err) {
-    console.warn(err.message);
-    return {};
   }
+
+  return createObject({
+    header: decode(encodedHeader),
+    payload: decode(encodedPayload),
+    signature,
+  });
 }
 
 function tryNormalise(value: string): string {
   try {
-    return JSON.stringify(JSON.parse(value));
+    return JSON.stringify(JSON.parse(value), null, 2);
   } catch (err) {
     return value;
   }
 }
 
 export default function Home() {
-  const [jwt, setJwt] = useState(
+  const [jwt, setJwt] = useLocalStorageState(
+    'jwt',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
   );
   const [payload, setPayload] = useState<string | null>(null);
   const [header, setHeader] = useState<string | null>(null);
   const [signature, setSignature] = useState<string | null>(null);
 
-  const decodeAndSetJwt = useCallback((value: string) => {
-    const decodedJwt = parseJwt(value);
-    setHeader(decodedJwt.header || null);
-    setPayload(decodedJwt.payload || null);
-    setSignature(decodedJwt.signature || null);
-    setJwt(value);
-  }, []);
+  const decodeAndSetJwt = useCallback(
+    (value: string) => {
+      try {
+        const decodedJwt = parseJwt(value);
+        setHeader(tryNormalise(decodedJwt.header) || null);
+        setPayload(tryNormalise(decodedJwt.payload) || null);
+        setSignature(tryNormalise(decodedJwt.signature) || null);
+      } catch (err) {
+        console.warn(err.message);
+      }
+      setJwt(value);
+    },
+    [setJwt],
+  );
 
   const setHeaderAndEncode = useCallback(
     (value: string) => {
@@ -99,7 +107,7 @@ export default function Home() {
       setHeader(normalized);
       setJwt(encodeObject({ header: normalized, payload, signature }));
     },
-    [payload, signature],
+    [payload, setJwt, signature],
   );
 
   const setPayloadAndEncode = useCallback(
@@ -108,7 +116,7 @@ export default function Home() {
       setPayload(normalized);
       setJwt(encodeObject({ header, payload: normalized, signature }));
     },
-    [header, signature],
+    [header, setJwt, signature],
   );
 
   const setSignatureAndEncode = useCallback(
@@ -116,8 +124,13 @@ export default function Home() {
       setSignature(value);
       setJwt(encodeObject({ header, payload, signature: value }));
     },
-    [header, payload],
+    [header, payload, setJwt],
   );
+
+  // bootstrap
+  useEffect(() => {
+    decodeAndSetJwt(jwt);
+  }, [decodeAndSetJwt, jwt]);
 
   return (
     <div className={styles.container}>
@@ -127,23 +140,9 @@ export default function Home() {
           name="description"
           content="Fast Online JWT encoder and decoder for JSON Web Tokens"
         />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
+        <link rel="apple-touch-icon" sizes="180x180" href={appleTouchIcon} />
+        <link rel="icon" type="image/png" sizes="32x32" href={favicon32} />
+        <link rel="icon" type="image/png" sizes="16x16" href={favicon16} />
       </Head>
 
       <main className={styles.main}>
@@ -160,12 +159,13 @@ export default function Home() {
             <label htmlFor="jwt">
               <h3>JWT</h3>
             </label>
-            <textarea
+            <AutoResizeTextArea
               id="jwt"
               autoFocus
               spellCheck={false}
               className={styles.input}
               value={jwt}
+              placeholder="Empty"
               onChange={(e) => decodeAndSetJwt(e.currentTarget.value.trim())}
             />
           </div>
@@ -174,11 +174,12 @@ export default function Home() {
             <label htmlFor="header">
               <h3>Header</h3>
             </label>
-            <textarea
+            <AutoResizeTextArea
               id="header"
               spellCheck={false}
-              className={classCat(styles.output, styles.header)}
+              className={classCat(styles.input, styles.header)}
               value={header || ''}
+              placeholder="Empty"
               onChange={(e) => setHeaderAndEncode(e.currentTarget.value.trim())}
             />
           </div>
@@ -186,11 +187,12 @@ export default function Home() {
             <label htmlFor="payload">
               <h3>Payload</h3>
             </label>
-            <textarea
+            <AutoResizeTextArea
               id="payload"
               spellCheck={false}
-              className={classCat(styles.output, styles.payload)}
+              className={classCat(styles.input, styles.payload)}
               value={payload || ''}
+              placeholder="Empty"
               onChange={(e) =>
                 setPayloadAndEncode(e.currentTarget.value.trim())
               }
@@ -200,11 +202,12 @@ export default function Home() {
             <label htmlFor="signature">
               <h3>Signature</h3>
             </label>
-            <textarea
+            <AutoResizeTextArea
               id="signature"
               spellCheck={false}
-              className={classCat(styles.output, styles.footer)}
+              className={classCat(styles.input, styles.signature)}
               value={signature || ''}
+              placeholder="Empty"
               onChange={(e) =>
                 setSignatureAndEncode(e.currentTarget.value.trim())
               }

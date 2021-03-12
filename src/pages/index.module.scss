@@ -16,7 +16,7 @@ $color: #bf007f;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 85em;
+  width: 90em;
 
   @media (max-width: 85em) {
     padding: 5rem 2em;
@@ -104,37 +104,29 @@ $color: #bf007f;
   label {
     padding: 1em 1em 0;
     display: block;
+
+    h3 {
+      margin: 0;
+      //font-size: 1.5em;
+    }
   }
 
-  h3 {
-    margin: 0;
-    //font-size: 1.5em;
+  .input {
+    width: 100%;
+    padding: 0 1em 0.5em;
+    margin: 1em 0 0;
+    font-size: 1.25em;
+    line-height: 1.5;
+    border: none;
+    outline: none;
+    font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+    min-height: 3em;
+    resize: vertical;
   }
 
 }
 
-.input, .output {
-  width: 100%;
-  padding: 0 1em;
-  margin: 1em 0 0;
-  font-size: 1.25em;
-  line-height: 1.5;
-  border: none;
-  outline: none;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-  Bitstream Vera Sans Mono, Courier New, monospace;
-  height: 5em;
-}
-
-.input {
-  //
-}
-
-.output {
-  &.payload {
-    height: 10em;
-  }
-}
 
 .logo {
   height: 1em;
