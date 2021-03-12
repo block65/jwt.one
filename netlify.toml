@@ -1,3 +1,8 @@
 [build]
 command = "yarn build && yarn export"
 publish = "out"
+
+[[headers]]
+for = "/_next/static/*"
+[headers.values]
+Cache-Control = "public, s-max-age=31557600"
