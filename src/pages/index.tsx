@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { classCat } from '@block65/classcat';
 import { encode, decode } from 'universal-base64url';
 import favicon16 from '../../public/favicon-16x16.png';

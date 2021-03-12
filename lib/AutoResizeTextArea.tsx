@@ -31,7 +31,6 @@ export const AutoResizeTextArea: FC<
       ref.current.style.height = 'inherit';
       ref.current.style.height = `${ref.current.scrollHeight}px`;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, windowSize]);
 
   return <textarea ref={ref} {...props} />;
