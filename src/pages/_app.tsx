@@ -1,4 +1,4 @@
-import '../globals.css';
+import '../globals.scss';
 import 'modern-normalize/modern-normalize.css';
 
 function MyApp({ Component, pageProps }) {

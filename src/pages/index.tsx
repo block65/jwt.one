@@ -122,7 +122,11 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>jwt.one</title>
+        <title>JWT.one - Online JSON Web Token Encoder / Decoder</title>
+        <meta
+          name="description"
+          content="Fast Online JWT encoder and decoder for JSON Web Tokens"
+        />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
@@ -210,8 +214,10 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        Made possible by our lovely friends at{' '}
-        <a href="https://www.colacube.io?utm_source=jwt.one">Colacube</a>
+        <p>
+          Made possible by our lovely friends at{' '}
+          <a href="https://www.colacube.io?utm_source=jwt.one">Colacube</a>
+        </p>
       </footer>
     </div>
   );
