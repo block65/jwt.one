@@ -8,15 +8,9 @@ import {
 } from '@block65/react-design-system';
 import { clsx } from 'clsx';
 import { FC, useCallback, useEffect, useState, useTransition } from 'react';
-import { decode, encode } from 'universal-base64url';
 import styles from './index.module.scss';
 import { useLocalStorageState } from '../gist_modules/maxholman/react-hooks/use-localstorage-state.js';
 import { AutoResizeTextArea } from '../lib/AutoResizeTextArea.js';
-
-function createObject<T>(obj: T): T {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return Object.assign(Object.create(null), obj);
-}
 
 type Jwt = {
   header?: string | null;
@@ -24,9 +18,22 @@ type Jwt = {
   signature?: string | null;
 };
 
+function createObject<T>(obj: T): T {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return Object.assign(Object.create(null), obj);
+}
+
+function decodeBase64Url(value: string) {
+  return atob(value.replace(/-/g, '+').replace(/_/g, '/'));
+}
+
+function encodeBase64Url(value: string) {
+  return btoa(value).replace(/\+/g, '-').replace(/\//g, '_');
+}
+
 function tryDecode(value: string): string | null {
   try {
-    return decode(value);
+    return decodeBase64Url(value);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.warn(err);
@@ -36,8 +43,8 @@ function tryDecode(value: string): string | null {
 
 function encodeObject(obj: Jwt) {
   return [
-    obj.header && encode(obj.header),
-    obj.payload && encode(obj.payload),
+    obj.header && encodeBase64Url(obj.header),
+    obj.payload && encodeBase64Url(obj.payload),
     obj.signature,
   ]
     .filter(Boolean)

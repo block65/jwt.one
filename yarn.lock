@@ -2545,18 +2545,6 @@ unbox-primitive@^1.0.2:
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
 
-universal-base64@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/universal-base64/-/universal-base64-2.1.0.tgz#511af92b3a07340fc2647036045aadb3bedcc320"
-  integrity sha512-WeOkACVnIXJZr/qlv7++Rl1zuZOHN96v2yS5oleUuv8eJOs5j9M5U3xQEIoWqn1OzIuIcgw0fswxWnUVGDfW6g==
-
-universal-base64url@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/universal-base64url/-/universal-base64url-1.1.0.tgz#9407e9acc3d3b9c3c39abd200bfa09cf13621782"
-  integrity sha512-qWv2+8KCaAWdpqqXwU8W0Yj9pflYDXP37/a3kec6Y4Je7bYzgIfxEVRjZWeLR67be7iot1lGCy5Nuo+xB0fojA==
-  dependencies:
-    universal-base64 "^2.1.0"
-
 update-browserslist-db@^1.0.9:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.0.10.tgz#0f54b876545726f17d00cd9a2561e6dade943ff3"
