@@ -1,7 +1,9 @@
 import {
+  Badge,
   Block,
   DesignSystem,
   Heading,
+  Inline,
   Panel,
   Text,
   TextLink,
@@ -31,7 +33,7 @@ function encodeBase64Url(value: string) {
   return btoa(value).replace(/\+/g, '-').replace(/\//g, '_');
 }
 
-function tryDecode(value: string): string | null {
+function tryDecodeJwtPart(value: string): string | null {
   try {
     return decodeBase64Url(value);
   } catch (err) {
@@ -61,32 +63,32 @@ function parseJwt(jwt: string): Jwt | null {
 
   if (!encodedPayload && !signature) {
     return createObject({
-      payload: tryDecode(encodedHeader),
+      payload: tryDecodeJwtPart(encodedHeader),
     });
   }
 
   if (!signature) {
     return createObject({
-      header: tryDecode(encodedHeader),
-      payload: tryDecode(encodedPayload),
+      header: tryDecodeJwtPart(encodedHeader),
+      payload: tryDecodeJwtPart(encodedPayload),
     });
   }
 
   return createObject({
-    header: tryDecode(encodedHeader),
-    payload: tryDecode(encodedPayload),
+    header: tryDecodeJwtPart(encodedHeader),
+    payload: tryDecodeJwtPart(encodedPayload),
     signature,
   });
 }
 
 function tryNormalise(value: string | null | undefined): string | null {
   if (!value) {
-    return null;
+    return value === null ? null : '';
   }
   try {
     return JSON.stringify(JSON.parse(value), null, 2);
   } catch (err) {
-    return null;
+    return value;
   }
 }
 
@@ -95,19 +97,20 @@ export const App: FC = () => {
     'jwt',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
   );
-  const [payload, setPayload] = useState<string | null>(null);
-  const [header, setHeader] = useState<string | null>(null);
-  const [signature, setSignature] = useState<string | null>(null);
+  const [payload, setPayload] = useState<string | null>('');
+  const [header, setHeader] = useState<string | null>('');
+  const [signature, setSignature] = useState<string | null>('');
 
   const realDecodeAndSetJwt = useCallback(
     (value: string) => {
       try {
         const decodedJwt = parseJwt(value);
-        setHeader(tryNormalise(decodedJwt?.header) || null);
-        setPayload(tryNormalise(decodedJwt?.payload) || null);
-        setSignature(tryNormalise(decodedJwt?.signature) || null);
+        setHeader(tryNormalise(decodedJwt?.header));
+        setPayload(tryNormalise(decodedJwt?.payload));
+        setSignature(tryNormalise(decodedJwt?.signature));
       } catch (err) {
-        // console.warn(err.message);
+        // eslint-disable-next-line no-console
+        console.warn(err);
       }
       setJwt(value);
     },
@@ -176,15 +179,16 @@ export const App: FC = () => {
               className={clsx(styles.input, styles.jwt)}
               value={jwt}
               placeholder="Empty"
-              onChange={(e) => decodeAndSetJwt(e.currentTarget.value)}
+              onChange={(e) => decodeAndSetJwt(e.currentTarget.value.trim())}
             />
           </Panel>
 
           <Block className={styles.card}>
             <label htmlFor="header">
-              <Heading level="3">
-                Header {header === 'null' && 'Unparseable'}
-              </Heading>
+              <Inline space="tiny">
+                <Heading level="3">Header</Heading>
+                {header === null && <Badge tone="critical">Unparseable</Badge>}
+              </Inline>
             </label>
             <AutoResizeTextArea
               spellCheck={false}
@@ -196,9 +200,10 @@ export const App: FC = () => {
           </Block>
           <Block className={styles.card}>
             <label htmlFor="payload">
-              <Heading level="3">
-                Payload {payload === 'null' && 'Unparseable'}
-              </Heading>
+              <Inline space="tiny">
+                <Heading level="3">Payload</Heading>
+                {payload === null && <Badge tone="critical">Unparseable</Badge>}
+              </Inline>
             </label>
             <AutoResizeTextArea
               spellCheck={false}
@@ -210,9 +215,12 @@ export const App: FC = () => {
           </Block>
           <Block className={styles.card}>
             <label htmlFor="signature">
-              <Heading level="3">
-                Signature {signature === 'null' && 'Unparseable'}
-              </Heading>
+              <Inline space="tiny">
+                <Heading level="3">Signature</Heading>
+                {signature === null && (
+                  <Badge tone="critical">Unparseable</Badge>
+                )}
+              </Inline>
             </label>
             <AutoResizeTextArea
               spellCheck={false}
