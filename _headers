@@ -1,0 +1,13 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: document-domain=()
+  Content-Security-Policy: script-src 'self'; frame-ancestors 'none';
+
+/static/
+  ! Content-Security-Policy
+  Cache-Control: public, s-max-age=31557600, max-age=31557600, immutable
+
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
