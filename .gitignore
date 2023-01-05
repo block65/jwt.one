@@ -1,11 +1,3 @@
-# dependencies
-/node_modules
-
-# next.js
-/.next/
-/out/
-
+node_modules
+dist
 *.log
-
-# local env files
-.env*.local

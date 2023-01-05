@@ -1,30 +1,40 @@
-import Head from 'next/head';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { classCat } from '@block65/classcat';
-import { encode, decode } from 'universal-base64url';
-import favicon16 from '../../public/favicon-16x16.png';
-import favicon32 from '../../public/favicon-32x32.png';
-import appleTouchIcon from '../../public/apple-touch-icon.png';
+import {
+  Block,
+  DesignSystem,
+  Heading,
+  Panel,
+  Text,
+  TextLink,
+} from '@block65/react-design-system';
+import { clsx } from 'clsx';
+import { FC, useCallback, useEffect, useState, useTransition } from 'react';
+import { decode, encode } from 'universal-base64url';
 import styles from './index.module.scss';
-import { AutoResizeTextArea } from '../../lib/AutoResizeTextArea';
-import { useLocalStorageState } from '../../lib/use-localstorage-state';
+import { useLocalStorageState } from '../gist_modules/maxholman/react-hooks/use-localstorage-state.js';
+import { AutoResizeTextArea } from '../lib/AutoResizeTextArea.js';
 
 function createObject<T>(obj: T): T {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return Object.assign(Object.create(null), obj);
 }
 
-type Jwt = { header?: string; payload?: string; signature?: string };
+type Jwt = {
+  header?: string | null;
+  payload?: string | null;
+  signature?: string | null;
+};
 
 function tryDecode(value: string): string | null {
   try {
     return decode(value);
   } catch (err) {
-    console.warn(err.message);
+    // eslint-disable-next-line no-console
+    console.warn(err);
     return null;
   }
 }
 
-function encodeObject(obj: Jwt): string {
+function encodeObject(obj: Jwt) {
   return [
     obj.header && encode(obj.header),
     obj.payload && encode(obj.payload),
@@ -39,9 +49,8 @@ function parseJwt(jwt: string): Jwt | null {
     return {};
   }
 
-  const [encodedHeader = '', encodedPayload = '', signature = ''] = jwt.split(
-    '.',
-  );
+  const [encodedHeader = '', encodedPayload = '', signature = ''] =
+    jwt.split('.');
 
   if (!encodedPayload && !signature) {
     return createObject({
@@ -63,16 +72,19 @@ function parseJwt(jwt: string): Jwt | null {
   });
 }
 
-function tryNormalise(value: string): string {
+function tryNormalise(value: string | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
   try {
     return JSON.stringify(JSON.parse(value), null, 2);
   } catch (err) {
-    return value;
+    return null;
   }
 }
 
-export default function Home() {
-  const [jwt, setJwt] = useLocalStorageState(
+export const App: FC = () => {
+  const [jwt, setJwt] = useLocalStorageState<string>(
     'jwt',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
   );
@@ -80,19 +92,29 @@ export default function Home() {
   const [header, setHeader] = useState<string | null>(null);
   const [signature, setSignature] = useState<string | null>(null);
 
-  const decodeAndSetJwt = useCallback(
+  const realDecodeAndSetJwt = useCallback(
     (value: string) => {
       try {
         const decodedJwt = parseJwt(value);
-        setHeader(tryNormalise(decodedJwt.header) || null);
-        setPayload(tryNormalise(decodedJwt.payload) || null);
-        setSignature(tryNormalise(decodedJwt.signature) || null);
+        setHeader(tryNormalise(decodedJwt?.header) || null);
+        setPayload(tryNormalise(decodedJwt?.payload) || null);
+        setSignature(tryNormalise(decodedJwt?.signature) || null);
       } catch (err) {
-        console.warn(err.message);
+        // console.warn(err.message);
       }
       setJwt(value);
     },
     [setJwt],
+  );
+
+  const [, startTransition] = useTransition();
+  const decodeAndSetJwt: typeof realDecodeAndSetJwt = useCallback(
+    (...args) => {
+      startTransition(() => {
+        realDecodeAndSetJwt(...args);
+      });
+    },
+    [realDecodeAndSetJwt],
   );
 
   const setHeaderAndEncode = useCallback(
@@ -127,89 +149,82 @@ export default function Home() {
   }, [decodeAndSetJwt, jwt]);
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>JWT.one - Online JSON Web Token Encoder / Decoder</title>
-        <meta
-          name="description"
-          content="Fast Online JWT encoder and decoder for JSON Web Tokens"
-        />
-        <link rel="apple-touch-icon" sizes="180x180" href={appleTouchIcon} />
-        <link rel="icon" type="image/png" sizes="32x32" href={favicon32} />
-        <link rel="icon" type="image/png" sizes="16x16" href={favicon16} />
-      </Head>
+    <DesignSystem>
+      <Block className={styles.wrapper} padding="tiny">
+        <Block component="main" className={styles.main}>
+          <Block marginBlock="huge" textAlign="center">
+            <Heading level="1" className={styles.title}>
+              jwt.one
+            </Heading>
+            <Text>JWT encoder and decoder. Optimized for load speed</Text>
+          </Block>
 
-      <main className={styles.main}>
-        <h2 className={styles.title}>jwt.one</h2>
-
-        <p className={styles.description}>
-          Online JWT encoder and decoder. Optimized for speed
-        </p>
-
-        <div className={styles.grid}>
-          <div className={styles.card}>
+          <Panel variant="ghost" className={styles.card}>
             <label htmlFor="jwt">
-              <h3>JWT</h3>
+              <Heading level="3">JWT</Heading>
             </label>
             <AutoResizeTextArea
-              id="jwt"
               autoFocus
               spellCheck={false}
-              className={classCat(styles.input, styles.jwt)}
+              className={clsx(styles.input, styles.jwt)}
               value={jwt}
               placeholder="Empty"
               onChange={(e) => decodeAndSetJwt(e.currentTarget.value)}
             />
-          </div>
+          </Panel>
 
-          <div className={styles.card}>
+          <Block className={styles.card}>
             <label htmlFor="header">
-              <h3>Header {header === 'null' && 'Unparseable'}</h3>
+              <Heading level="3">
+                Header {header === 'null' && 'Unparseable'}
+              </Heading>
             </label>
             <AutoResizeTextArea
-              id="header"
               spellCheck={false}
-              className={classCat(styles.input, styles.header)}
+              className={clsx(styles.input, styles.header)}
               value={header || ''}
               placeholder="Empty"
               onChange={(e) => setHeaderAndEncode(e.currentTarget.value)}
             />
-          </div>
-          <div className={styles.card}>
+          </Block>
+          <Block className={styles.card}>
             <label htmlFor="payload">
-              <h3>Payload {payload === 'null' && 'Unparseable'}</h3>
+              <Heading level="3">
+                Payload {payload === 'null' && 'Unparseable'}
+              </Heading>
             </label>
             <AutoResizeTextArea
-              id="payload"
               spellCheck={false}
-              className={classCat(styles.input, styles.payload)}
+              className={clsx(styles.input, styles.payload)}
               value={payload || ''}
               placeholder="Empty"
               onChange={(e) => setPayloadAndEncode(e.currentTarget.value)}
             />
-          </div>
-          <div className={styles.card}>
+          </Block>
+          <Block className={styles.card}>
             <label htmlFor="signature">
-              <h3>Signature {signature === 'null' && 'Unparseable'}</h3>
+              <Heading level="3">
+                Signature {signature === 'null' && 'Unparseable'}
+              </Heading>
             </label>
             <AutoResizeTextArea
-              id="signature"
               spellCheck={false}
-              className={classCat(styles.input, styles.signature)}
+              className={clsx(styles.input, styles.signature)}
               value={signature || ''}
               placeholder="Empty"
               onChange={(e) => setSignatureAndEncode(e.currentTarget.value)}
             />
-          </div>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <p>
-          Made possible by our lovely friends at{' '}
-          <a href="https://www.colacube.io?utm_source=jwt.one">Colacube</a>
-        </p>
-      </footer>
-    </div>
+          </Block>
+        </Block>
+        <Block component="footer" className={styles.footer}>
+          <Text>
+            Made possible by our lovely friends at{' '}
+            <TextLink href="https://www.colacube.io?utm_source=jwt.one">
+              Colacube
+            </TextLink>
+          </Text>
+        </Block>
+      </Block>
+    </DesignSystem>
   );
-}
+};

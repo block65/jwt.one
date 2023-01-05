@@ -1,15 +1,31 @@
-import { FC, TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
+import {
+  FC,
+  TextareaHTMLAttributes,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from 'react';
 
 export const AutoResizeTextArea: FC<
   TextareaHTMLAttributes<HTMLTextAreaElement>
 > = (props) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLTextAreaElement>(null);
   const { value } = props;
 
-  const [windowSize, setWindowSize] = useState({
-    width: undefined,
-    height: undefined,
+  const [windowSize, realSetWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
   });
+
+  const [, startTransition] = useTransition();
+
+  const setWindowSize: typeof realSetWindowSize = useCallback((...args) => {
+    startTransition(() => {
+      realSetWindowSize(...args);
+    });
+  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -24,7 +40,7 @@ export const AutoResizeTextArea: FC<
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [setWindowSize]);
 
   useEffect(() => {
     if (ref.current) {
