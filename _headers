@@ -5,7 +5,7 @@
   Permissions-Policy: document-domain=()
   Content-Security-Policy: script-src 'self'; frame-ancestors 'none';
 
-/assets/
+/assets/*
   ! Content-Security-Policy
   Cache-Control: public, s-max-age=31557600, max-age=31557600, immutable
 
