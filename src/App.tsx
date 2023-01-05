@@ -10,6 +10,11 @@ import {
 } from '@block65/react-design-system';
 import { clsx } from 'clsx';
 import { FC, useCallback, useEffect, useState, useTransition } from 'react';
+import {
+  decode as decodeBase64Url,
+  encode as encodeBase64Url,
+} from 'universal-base64url';
+
 import styles from './index.module.scss';
 import { useLocalStorageState } from '../gist_modules/maxholman/react-hooks/use-localstorage-state.js';
 import { AutoResizeTextArea } from '../lib/AutoResizeTextArea.js';
@@ -23,14 +28,6 @@ type Jwt = {
 function createObject<T>(obj: T): T {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return Object.assign(Object.create(null), obj);
-}
-
-function decodeBase64Url(value: string) {
-  return atob(value.replace(/-/g, '+').replace(/_/g, '/'));
-}
-
-function encodeBase64Url(value: string) {
-  return btoa(value).replace(/\+/g, '-').replace(/\//g, '_');
 }
 
 function tryDecodeJwtPart(value: string): string | null {

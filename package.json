@@ -13,7 +13,8 @@
     "clsx": "^1.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "the-new-css-reset": "^1.8.2"
+    "the-new-css-reset": "^1.8.2",
+    "universal-base64url": "^1.1.0"
   },
   "devDependencies": {
     "@block65/eslint-config": "8.0.0",
