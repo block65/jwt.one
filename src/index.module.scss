@@ -4,11 +4,12 @@
   color-scheme: dark light;
   #{rds.$color-tones-accent-h}: 320deg;
   #{rds.$color-tones-accent-s}: 100%;
+  #{rds.$color-tones-accent-l}: 40%;
 
   --brand: hsl(
     var(#{rds.$color-tones-accent-h}),
     var(#{rds.$color-tones-accent-s}),
-    37%
+    var(#{rds.$color-tones-accent-l})
   );
 }
 

@@ -160,7 +160,7 @@ export const App: FC = () => {
       <Block className={styles.wrapper} padding="tiny">
         <Block component="main" className={styles.main}>
           <Block marginBlock="huge" textAlign="center">
-            <Heading level="1" className={styles.title}>
+            <Heading level="2" className={styles.title}>
               jwt.one
             </Heading>
             <Text>JWT encoder and decoder. Optimized for load speed</Text>
