@@ -1,0 +1,74 @@
+.wrapper {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  max-width: 50em;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+
+  .main {
+    grid-area: 1/1;
+
+    .title {
+      color: var(--brand);
+    }
+
+    .card {
+      &:nth-child(1) {
+        grid-area: 1/1;
+      }
+
+      border: 1px solid var(--borderColor-muted);
+      border-radius: 0.125rem;
+      transition: color 0.15s ease, border-color 0.15s ease;
+      padding: 0;
+
+      &:hover,
+      &:focus,
+      &:focus-within,
+      &:active {
+        border-color: var(--borderColor-default);
+      }
+
+      label {
+        padding: 1rem 1rem 0;
+        display: block;
+        color: var(--brand);
+      }
+
+      .input {
+        font-size: 1.25rem;
+        font-family: 'Roboto Mono', monospace;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+
+        width: 100%;
+        padding: 0 1rem 0.5em;
+        margin: 1rem 0 0;
+        line-height: 1.5;
+        border: none;
+        outline: none;
+
+        min-height: 3em;
+        resize: vertical;
+
+        &::placeholder {
+          color: var(--fgColor-muted);
+        }
+
+        &.jwt,
+        &.signature {
+          word-break: break-all;
+        }
+      }
+    }
+  }
+
+  .footer {
+    grid-area: 2/1;
+    padding: 1em;
+    text-align: center;
+  }
+}

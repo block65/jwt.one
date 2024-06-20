@@ -1,6 +1,6 @@
+import { Box, type BoxProps } from '@block65/react-design-system';
 import {
-  FC,
-  TextareaHTMLAttributes,
+  type FC,
   useCallback,
   useEffect,
   useRef,
@@ -8,9 +8,7 @@ import {
   useTransition,
 } from 'react';
 
-export const AutoResizeTextArea: FC<
-  TextareaHTMLAttributes<HTMLTextAreaElement>
-> = (props) => {
+export const AutoResizeTextArea: FC<BoxProps<'textarea'>> = (props) => {
   const ref = useRef<HTMLTextAreaElement>(null);
   const { value } = props;
 
@@ -49,5 +47,5 @@ export const AutoResizeTextArea: FC<
     }
   }, [value, windowSize]);
 
-  return <textarea ref={ref} {...props} />;
+  return <Box component="textarea" ref={ref} {...props} />;
 };

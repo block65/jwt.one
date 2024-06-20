@@ -5,91 +5,28 @@ import {
   Heading,
   Inline,
   Panel,
-  Text,
+  Paragraph,
   TextLink,
 } from '@block65/react-design-system';
-import { clsx } from 'clsx';
-import { FC, useCallback, useEffect, useState, useTransition } from 'react';
 import {
-  decode as decodeBase64Url,
-  encode as encodeBase64Url,
-} from 'universal-base64url';
-
-import styles from './index.module.scss';
-import { useLocalStorageState } from '../gist_modules/maxholman/react-hooks/use-localstorage-state.js';
+  useColorSchemeEffect,
+  useLocalStorageState,
+} from '@block65/react-design-system/hooks';
+import { clsx } from 'clsx';
+import {
+  type FC,
+  useCallback,
+  useEffect,
+  useState,
+  useTransition,
+} from 'react';
+import styles from './app.module.scss';
 import { AutoResizeTextArea } from '../lib/AutoResizeTextArea.js';
-
-type Jwt = {
-  header?: string | null;
-  payload?: string | null;
-  signature?: string | null;
-};
-
-function createObject<T>(obj: T): T {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return Object.assign(Object.create(null), obj);
-}
-
-function tryDecodeJwtPart(value: string): string | null {
-  try {
-    return decodeBase64Url(value);
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn(err);
-    return null;
-  }
-}
-
-function encodeObject(obj: Jwt) {
-  return [
-    obj.header && encodeBase64Url(obj.header),
-    obj.payload && encodeBase64Url(obj.payload),
-    obj.signature,
-  ]
-    .filter(Boolean)
-    .join('.');
-}
-
-function parseJwt(jwt: string): Jwt | null {
-  if (!jwt) {
-    return {};
-  }
-
-  const [encodedHeader = '', encodedPayload = '', signature = ''] =
-    jwt.split('.');
-
-  if (!encodedPayload && !signature) {
-    return createObject({
-      payload: tryDecodeJwtPart(encodedHeader),
-    });
-  }
-
-  if (!signature) {
-    return createObject({
-      header: tryDecodeJwtPart(encodedHeader),
-      payload: tryDecodeJwtPart(encodedPayload),
-    });
-  }
-
-  return createObject({
-    header: tryDecodeJwtPart(encodedHeader),
-    payload: tryDecodeJwtPart(encodedPayload),
-    signature,
-  });
-}
-
-function tryNormalise(value: string | null | undefined): string | null {
-  if (!value) {
-    return value === null ? null : '';
-  }
-  try {
-    return JSON.stringify(JSON.parse(value), null, 2);
-  } catch (err) {
-    return value;
-  }
-}
+import { parseJwt, tryNormalise, encodeObject } from './common.js';
 
 export const App: FC = () => {
+  useColorSchemeEffect();
+
   const [jwt, setJwt] = useLocalStorageState<string>(
     'jwt',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
@@ -157,18 +94,20 @@ export const App: FC = () => {
 
   return (
     <DesignSystem>
-      <Block className={styles.wrapper} padding="tiny">
+      <Block className={styles.wrapper} padding="2">
         <Block component="main" className={styles.main}>
-          <Block marginBlock="huge" textAlign="center">
-            <Heading level="2" className={styles.title}>
+          <Block marginBlock="11" textAlign="center">
+            <Heading level="1" className={styles.title}>
               jwt.one
             </Heading>
-            <Text>JWT encoder and decoder. Optimized for load speed</Text>
+            <Paragraph secondary>
+              Simple JWT encoder / decoder. Optimized for load speed
+            </Paragraph>
           </Block>
 
-          <Panel variant="ghost" className={styles.card}>
+          <Panel className={styles.card}>
             <label htmlFor="jwt">
-              <Heading level="3">JWT</Heading>
+              <Heading>JWT</Heading>
             </label>
             <AutoResizeTextArea
               autoFocus
@@ -182,9 +121,11 @@ export const App: FC = () => {
 
           <Block className={styles.card}>
             <label htmlFor="header">
-              <Inline space="tiny">
-                <Heading level="3">Header</Heading>
-                {header === null && <Badge tone="critical">Unparseable</Badge>}
+              <Inline>
+                <Heading>Header</Heading>
+                {header === null && (
+                  <Badge variant="attention">Unparseable</Badge>
+                )}
               </Inline>
             </label>
             <AutoResizeTextArea
@@ -197,9 +138,11 @@ export const App: FC = () => {
           </Block>
           <Block className={styles.card}>
             <label htmlFor="payload">
-              <Inline space="tiny">
-                <Heading level="3">Payload</Heading>
-                {payload === null && <Badge tone="critical">Unparseable</Badge>}
+              <Inline>
+                <Heading>Payload</Heading>
+                {payload === null && (
+                  <Badge variant="attention">Unparseable</Badge>
+                )}
               </Inline>
             </label>
             <AutoResizeTextArea
@@ -212,10 +155,10 @@ export const App: FC = () => {
           </Block>
           <Block className={styles.card}>
             <label htmlFor="signature">
-              <Inline space="tiny">
-                <Heading level="3">Signature</Heading>
+              <Inline>
+                <Heading>Signature</Heading>
                 {signature === null && (
-                  <Badge tone="critical">Unparseable</Badge>
+                  <Badge variant="attention">Unparseable</Badge>
                 )}
               </Inline>
             </label>
@@ -229,12 +172,15 @@ export const App: FC = () => {
           </Block>
         </Block>
         <Block component="footer" className={styles.footer}>
-          <Text>
+          <Paragraph secondary>
             Made possible by our lovely friends at{' '}
-            <TextLink href="https://www.colacube.io?utm_source=jwt.one">
+            <TextLink
+              weight="weak"
+              href="https://www.colacube.io?utm_source=jwt.one"
+            >
               Colacube
             </TextLink>
-          </Text>
+          </Paragraph>
         </Block>
       </Block>
     </DesignSystem>
