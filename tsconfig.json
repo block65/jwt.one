@@ -3,5 +3,5 @@
   "compilerOptions": {
     "noPropertyAccessFromIndexSignature": false
   },
-  "exclude": ["./dist", "node_modules"]
+  "exclude": ["./dist", "./build", "node_modules"]
 }

@@ -22,7 +22,9 @@ import {
 } from 'react';
 import styles from './app.module.scss';
 import { AutoResizeTextArea } from '../lib/AutoResizeTextArea.js';
-import { parseJwt, tryNormalise, encodeObject } from './common.js';
+import { encodeObject, parseJwt, tryNormalise } from './common.js';
+
+import './global.css.js';
 
 export const App: FC = () => {
   useColorSchemeEffect();
@@ -97,7 +99,7 @@ export const App: FC = () => {
       <Block className={styles.wrapper} padding="2">
         <Block component="main" className={styles.main}>
           <Block marginBlock="11" textAlign="center">
-            <Heading level="1" className={styles.title}>
+            <Heading level="1" fontSize="6" className={styles.title}>
               jwt.one
             </Heading>
             <Paragraph secondary>
@@ -174,10 +176,7 @@ export const App: FC = () => {
         <Block component="footer" className={styles.footer}>
           <Paragraph secondary>
             Made possible by our lovely friends at{' '}
-            <TextLink
-              weight="weak"
-              href="https://www.colacube.io?utm_source=jwt.one"
-            >
+            <TextLink href="https://www.colacube.io?utm_source=jwt.one">
               Colacube
             </TextLink>
           </Paragraph>

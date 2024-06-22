@@ -6,7 +6,16 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.config.*'],
+      files: ['*.css.ts'],
+      rules: {
+        'import/no-extraneous-dependencies': [
+          'error',
+          { devDependencies: true },
+        ],
+      },
+    },
+    {
+      files: ['*.config.ts'],
       rules: {
         'import/no-extraneous-dependencies': [
           'error',
