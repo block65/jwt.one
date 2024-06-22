@@ -102,14 +102,16 @@ export const App: FC = () => {
             <Heading level="1" fontSize="6" className={styles.title}>
               jwt.one
             </Heading>
-            <Paragraph secondary>
+            <Paragraph secondary textWrap="pretty">
               Simple JWT encoder / decoder. Optimized for load speed
             </Paragraph>
           </Block>
 
           <Panel className={styles.card}>
             <label htmlFor="jwt">
-              <Heading>JWT</Heading>
+              <Heading level="2" fontSize="3">
+                JWT
+              </Heading>
             </label>
             <AutoResizeTextArea
               autoFocus
@@ -124,7 +126,9 @@ export const App: FC = () => {
           <Block className={styles.card}>
             <label htmlFor="header">
               <Inline>
-                <Heading>Header</Heading>
+                <Heading level="2" fontSize="3">
+                  Header
+                </Heading>
                 {header === null && (
                   <Badge variant="attention">Unparseable</Badge>
                 )}
@@ -141,7 +145,9 @@ export const App: FC = () => {
           <Block className={styles.card}>
             <label htmlFor="payload">
               <Inline>
-                <Heading>Payload</Heading>
+                <Heading level="2" fontSize="3">
+                  Payload
+                </Heading>
                 {payload === null && (
                   <Badge variant="attention">Unparseable</Badge>
                 )}
@@ -158,7 +164,9 @@ export const App: FC = () => {
           <Block className={styles.card}>
             <label htmlFor="signature">
               <Inline>
-                <Heading>Signature</Heading>
+                <Heading level="2" fontSize="3">
+                  Signature
+                </Heading>
                 {signature === null && (
                   <Badge variant="attention">Unparseable</Badge>
                 )}

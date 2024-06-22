@@ -55,6 +55,8 @@ html {
   // RDS
   --brand: #cc0088;
 
+  --color-accent: #cc0088;
+
   &[data-color-scheme='dark'],
   &:not([data-color-scheme]) {
     color-scheme: dark;
@@ -70,7 +72,7 @@ html {
     color-scheme: light;
     --color-bgColor: #fff;
     --color-fgColor: #333;
-    --color-muted-fgColor: #777;
+    --color-muted-fgColor: #757575;
     --color-muted-borderColor: #ccc;
 
     // @include rds.tokens($borderWidth: 99px);
