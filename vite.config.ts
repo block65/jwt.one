@@ -5,8 +5,6 @@ import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 
-const buildId = crypto.randomUUID();
-
 export default defineConfig((config) => ({
   plugins: [react(), vanillaExtractPlugin()],
   build: {
@@ -27,9 +25,9 @@ export default defineConfig((config) => ({
 
   css: {
     modules: {
-      entryFileNames: `assets/${buildId}/[hash:22].js`,
-      chunkFileNames: `assets/${buildId}/[hash:22].js`,
-      assetFileNames: `assets/${buildId}/[hash:22].[ext]`,
+      entryFileNames: `assets/[hash:22].js`,
+      chunkFileNames: `assets/[hash:22].js`,
+      assetFileNames: `assets/[hash:22].[ext]`,
       generateScopedName(...args) {
         const [name, filename /* , css */] = args;
         const className = `_${hash(args.join('_'))}`;
