@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@block65/react-design-system':
-        specifier: ^1.0.0-rc.0
-        version: 1.0.0-rc.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(@vanilla-extract/css@1.15.3)(react-dom@18.3.1(react@18.3.1))(react-intl@6.6.8(react@18.3.1)(typescript@5.5.2))(react@18.3.1)
+        specifier: 1.0.0-rc.2
+        version: 1.0.0-rc.2(@floating-ui/dom@1.6.5)(@floating-ui/react-dom@2.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@floating-ui/react@0.26.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@18.3.0)(@types/react@18.3.3)(@vanilla-extract/css@1.15.3)(react-dom@18.3.1(react@18.3.1))(react-intl@6.6.8(react@18.3.1)(typescript@5.5.2))(react@18.3.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -255,9 +255,12 @@ packages:
       eslint-plugin-unicorn:
         optional: true
 
-  '@block65/react-design-system@1.0.0-rc.0':
-    resolution: {integrity: sha512-IJhcIxYeJR8tV7nUB7SDj8fU6CyeYYafkLao/p79a9XWiy0N5obT3qbzZr6irXHZ3pNKIrtFXQ4XGPsYFF8BQA==}
+  '@block65/react-design-system@1.0.0-rc.2':
+    resolution: {integrity: sha512-Dm1hr35e9aKJ+fmBq0FhApJ4OO6Urzy7hCJs6n2RDHAWEp7EKYj5ROt78L0GCAsV5ZFBwDQgwo5rtMng4q+sXA==}
     peerDependencies:
+      '@floating-ui/dom': ^1.6.5
+      '@floating-ui/react': ^0.26.17
+      '@floating-ui/react-dom': ^2.1.0
       '@types/react': ^18.3.3
       '@types/react-dom': ^18.3.0
       '@vanilla-extract/css': ^1.15.3
@@ -902,9 +905,6 @@ packages:
 
   '@vanilla-extract/css@1.15.3':
     resolution: {integrity: sha512-mxoskDAxdQAspbkmQRxBvolUi1u1jnyy9WZGm+GeH8V2wwhEvndzl1QoK7w8JfA0WFevTxbev5d+i+xACZlPhA==}
-
-  '@vanilla-extract/dynamic@2.1.1':
-    resolution: {integrity: sha512-iqf736036ujEIKsIq28UsBEMaLC2vR2DhwKyrG3NDb/fRy9qL9FKl1TqTtBV4daU30Uh3saeik4vRzN8bzQMbw==}
 
   '@vanilla-extract/integration@7.1.6':
     resolution: {integrity: sha512-5fDhW0Bm/MBG9B63On3dHl1tExcmvzG5hdrS9J8LR5qTIHuT5wIxeZ4LEhLgfqgl4b7PglGP+ey7N9rXb/FlOA==}
@@ -2537,14 +2537,13 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  '@block65/react-design-system@1.0.0-rc.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(@vanilla-extract/css@1.15.3)(react-dom@18.3.1(react@18.3.1))(react-intl@6.6.8(react@18.3.1)(typescript@5.5.2))(react@18.3.1)':
+  '@block65/react-design-system@1.0.0-rc.2(@floating-ui/dom@1.6.5)(@floating-ui/react-dom@2.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@floating-ui/react@0.26.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@18.3.0)(@types/react@18.3.3)(@vanilla-extract/css@1.15.3)(react-dom@18.3.1(react@18.3.1))(react-intl@6.6.8(react@18.3.1)(typescript@5.5.2))(react@18.3.1)':
     dependencies:
       '@floating-ui/dom': 1.6.5
       '@floating-ui/react': 0.26.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@floating-ui/react-dom': 2.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react': 18.3.3
       '@types/react-dom': 18.3.0
-      '@vanilla-extract/dynamic': 2.1.1
       clsx: 2.1.1
       js-cookie: 3.0.5
       react: 18.3.1
@@ -3099,10 +3098,6 @@ snapshots:
       picocolors: 1.0.1
     transitivePeerDependencies:
       - babel-plugin-macros
-
-  '@vanilla-extract/dynamic@2.1.1':
-    dependencies:
-      '@vanilla-extract/private': 1.0.5
 
   '@vanilla-extract/integration@7.1.6(@types/node@20.14.7)(sass@1.77.6)':
     dependencies:

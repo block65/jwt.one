@@ -3,4 +3,13 @@ import { createGlobalTheme } from '@vanilla-extract/css';
 
 const selector = ':root';
 
-createGlobalTheme(selector, vars, tokens);
+createGlobalTheme(selector, vars, {
+  ...tokens,
+  textLinks: {
+    ...tokens.textLinks,
+    normal: {
+      ...tokens.textLinks.normal,
+      fontWeight: tokens.text.fontWeight.medium,
+    },
+  },
+});
