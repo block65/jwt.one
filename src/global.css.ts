@@ -5,10 +5,10 @@ const selector = ':root';
 
 createGlobalTheme(selector, vars, {
   ...tokens,
-  textLinks: {
-    ...tokens.textLinks,
+  textlink: {
+    ...tokens.textlink,
     normal: {
-      ...tokens.textLinks.normal,
+      ...tokens.textlink.normal,
       fontWeight: tokens.text.fontWeight.medium,
     },
   },

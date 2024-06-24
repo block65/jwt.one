@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@block65/react-design-system':
-        specifier: ^1.0.0-rc.2
-        version: 1.0.0-rc.2(@floating-ui/dom@1.6.5)(@floating-ui/react-dom@2.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@floating-ui/react@0.26.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@18.3.0)(@types/react@18.3.3)(@vanilla-extract/css@1.15.3)(react-dom@18.3.1(react@18.3.1))(react-intl@6.6.8(react@18.3.1)(typescript@5.5.2))(react@18.3.1)
+        specifier: ^1.0.0-rc.3
+        version: 1.0.0-rc.3(@types/react-dom@18.3.0)(@types/react@18.3.3)(@vanilla-extract/css@1.15.3)(react-dom@18.3.1(react@18.3.1))(react-intl@6.6.8(react@18.3.1)(typescript@5.5.2))(react@18.3.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -255,12 +255,9 @@ packages:
       eslint-plugin-unicorn:
         optional: true
 
-  '@block65/react-design-system@1.0.0-rc.2':
-    resolution: {integrity: sha512-Dm1hr35e9aKJ+fmBq0FhApJ4OO6Urzy7hCJs6n2RDHAWEp7EKYj5ROt78L0GCAsV5ZFBwDQgwo5rtMng4q+sXA==}
+  '@block65/react-design-system@1.0.0-rc.3':
+    resolution: {integrity: sha512-nkceF0R5pPO/AEp+NxkZRr0bQCv263DgXn9qA/0ZZwlOBfiE/R6wsp5FN48+9fSMwWAV4ZflPfjrFeW6SWkp8Q==}
     peerDependencies:
-      '@floating-ui/dom': ^1.6.5
-      '@floating-ui/react': ^0.26.17
-      '@floating-ui/react-dom': ^2.1.0
       '@types/react': ^18.3.3
       '@types/react-dom': ^18.3.0
       '@vanilla-extract/css': ^1.15.3
@@ -2537,7 +2534,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  '@block65/react-design-system@1.0.0-rc.2(@floating-ui/dom@1.6.5)(@floating-ui/react-dom@2.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@floating-ui/react@0.26.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@18.3.0)(@types/react@18.3.3)(@vanilla-extract/css@1.15.3)(react-dom@18.3.1(react@18.3.1))(react-intl@6.6.8(react@18.3.1)(typescript@5.5.2))(react@18.3.1)':
+  '@block65/react-design-system@1.0.0-rc.3(@types/react-dom@18.3.0)(@types/react@18.3.3)(@vanilla-extract/css@1.15.3)(react-dom@18.3.1(react@18.3.1))(react-intl@6.6.8(react@18.3.1)(typescript@5.5.2))(react@18.3.1)':
     dependencies:
       '@floating-ui/dom': 1.6.5
       '@floating-ui/react': 0.26.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
