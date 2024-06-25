@@ -3,7 +3,6 @@ import { App } from './App.js';
 
 import 'the-new-css-reset';
 import '@block65/react-design-system/css';
-import './global.scss';
 
 const el = document.getElementById('root');
 

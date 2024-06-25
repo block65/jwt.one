@@ -12,7 +12,6 @@ import {
   useColorSchemeEffect,
   useLocalStorageState,
 } from '@block65/react-design-system/hooks';
-import { clsx } from 'clsx';
 import {
   type FC,
   useCallback,
@@ -20,8 +19,17 @@ import {
   useState,
   useTransition,
 } from 'react';
-import styles from './app.module.scss';
 import { AutoResizeTextArea } from '../lib/AutoResizeTextArea.js';
+import {
+  breakyWordyClassName,
+  cardClassName,
+  footerClassName,
+  inputClassName,
+  labelClassName,
+  mainClassName,
+  titleClassName,
+  wrapperClassName,
+} from './app.css.js';
 import { encodeObject, parseJwt, tryNormalise } from './common.js';
 
 import './global.css.js';
@@ -96,10 +104,10 @@ export const App: FC = () => {
 
   return (
     <DesignSystem>
-      <Block className={styles.wrapper} padding="2">
-        <Block component="main" className={styles.main}>
+      <Block className={wrapperClassName} padding="2">
+        <Block component="main" className={mainClassName}>
           <Block marginBlock="11" textAlign="center">
-            <Heading level="1" className={styles.title}>
+            <Heading level="1" className={titleClassName}>
               jwt.one
             </Heading>
             <Paragraph secondary textWrap="pretty">
@@ -107,81 +115,95 @@ export const App: FC = () => {
             </Paragraph>
           </Block>
 
-          <Panel className={styles.card}>
-            <label htmlFor="jwt">
+          <Block className={cardClassName}>
+            <Inline component="label" htmlFor="jwt" className={labelClassName}>
               <Heading level="2" fontSize="2" fontWeight="medium">
                 JWT
               </Heading>
-            </label>
+            </Inline>
+
             <AutoResizeTextArea
+              id="jwt"
               autoFocus
               spellCheck={false}
-              className={clsx(styles.input, styles.jwt)}
               value={jwt}
+              className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
               onChange={(e) => decodeAndSetJwt(e.currentTarget.value.trim())}
             />
-          </Panel>
+          </Block>
 
-          <Block className={styles.card}>
-            <label htmlFor="header">
-              <Inline>
-                <Heading level="2" fontSize="2" fontWeight="medium">
-                  Header
-                </Heading>
-                {header === null && (
-                  <Badge variant="attention">Unparseable</Badge>
-                )}
-              </Inline>
-            </label>
+          <Block className={cardClassName}>
+            <Inline
+              component="label"
+              htmlFor="header"
+              className={labelClassName}
+            >
+              <Heading level="2" fontSize="2" fontWeight="medium">
+                Header
+              </Heading>
+
+              {header === null && (
+                <Badge variant="attention">Unparseable</Badge>
+              )}
+            </Inline>
             <AutoResizeTextArea
+              id="header"
               spellCheck={false}
-              className={clsx(styles.input, styles.header)}
               value={header || ''}
+              className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
               onChange={(e) => setHeaderAndEncode(e.currentTarget.value)}
             />
           </Block>
-          <Block className={styles.card}>
-            <label htmlFor="payload">
-              <Inline>
-                <Heading level="2" fontSize="2" fontWeight="medium">
-                  Payload
-                </Heading>
-                {payload === null && (
-                  <Badge variant="attention">Unparseable</Badge>
-                )}
-              </Inline>
-            </label>
+          <Block className={cardClassName}>
+            <Inline
+              component="label"
+              htmlFor="payload"
+              className={labelClassName}
+            >
+              <Heading level="2" fontSize="2" fontWeight="medium">
+                Payload
+              </Heading>
+
+              {payload === null && (
+                <Badge variant="attention">Unparseable</Badge>
+              )}
+            </Inline>
             <AutoResizeTextArea
+              id="payload"
               spellCheck={false}
-              className={clsx(styles.input, styles.payload)}
               value={payload || ''}
+              className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
               onChange={(e) => setPayloadAndEncode(e.currentTarget.value)}
             />
           </Block>
-          <Block className={styles.card}>
-            <label htmlFor="signature">
-              <Inline>
-                <Heading level="2" fontSize="2">
-                  Signature
-                </Heading>
-                {signature === null && (
-                  <Badge variant="attention">Unparseable</Badge>
-                )}
-              </Inline>
-            </label>
+
+          <Block className={cardClassName}>
+            <Inline
+              component="label"
+              htmlFor="signature"
+              className={labelClassName}
+            >
+              <Heading level="2" fontSize="2" fontWeight="medium">
+                Signature
+              </Heading>
+              {signature === null && (
+                <Badge variant="attention">Unparseable</Badge>
+              )}
+            </Inline>
             <AutoResizeTextArea
+              id="signature"
               spellCheck={false}
-              className={clsx(styles.input, styles.signature)}
               value={signature || ''}
+              className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
               onChange={(e) => setSignatureAndEncode(e.currentTarget.value)}
             />
           </Block>
         </Block>
-        <Block component="footer" className={styles.footer}>
+        <Block component="footer" className={footerClassName}>
           <Paragraph secondary>
             Made possible by our lovely friends at{' '}
             <TextLink href="https://www.colacube.io?utm_source=jwt.one">
