@@ -1,5 +1,9 @@
 import { tokens, vars } from '@block65/react-design-system/vanilla-extract';
-import { createGlobalTheme, globalStyle } from '@vanilla-extract/css';
+import {
+  createGlobalTheme,
+  createTheme,
+  globalStyle,
+} from '@vanilla-extract/css';
 import defaults from 'defaults';
 
 globalStyle('html', {
@@ -27,13 +31,6 @@ createGlobalTheme(
   vars,
   defaults(
     {
-      base: {
-        color: {
-          brand: '#cc0088',
-          accent: vars.base.color.brand,
-          bgColor: '#151515',
-        },
-      },
       text: {
         size: {
           '5': {
@@ -60,3 +57,29 @@ createGlobalTheme(
     tokens,
   ),
 );
+
+export const darkModeThemeClassName = createTheme(vars.base.color, {
+  ...tokens.base.color,
+  brand: '#f200a1',
+  accent: vars.base.color.brand,
+  bgColor: '#151515',
+  fgColor: '#f0f0f0',
+  borderColor: '#666',
+  muted: {
+    ...tokens.base.color.muted,
+    borderColor: '#333',
+  },
+});
+
+export const lightModeThemeClassName = createTheme(vars.base.color, {
+  ...tokens.base.color,
+  brand: '#cc0088',
+  accent: vars.base.color.brand,
+  bgColor: '#f0f0f0',
+  fgColor: '#151515',
+  borderColor: '#999',
+  muted: {
+    ...tokens.base.color.muted,
+    borderColor: '#ccc',
+  },
+});

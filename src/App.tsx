@@ -4,7 +4,6 @@ import {
   DesignSystem,
   Heading,
   Inline,
-  Panel,
   Paragraph,
   TextLink,
 } from '@block65/react-design-system';
@@ -31,11 +30,13 @@ import {
   wrapperClassName,
 } from './app.css.js';
 import { encodeObject, parseJwt, tryNormalise } from './common.js';
-
-import './global.css.js';
+import {
+  darkModeThemeClassName,
+  lightModeThemeClassName,
+} from './global.css.js';
 
 export const App: FC = () => {
-  useColorSchemeEffect();
+  const [wantsDarkMode] = useColorSchemeEffect();
 
   const [jwt, setJwt] = useLocalStorageState<string>(
     'jwt',
@@ -103,7 +104,11 @@ export const App: FC = () => {
   }, [decodeAndSetJwt, jwt]);
 
   return (
-    <DesignSystem>
+    <DesignSystem
+      className={
+        wantsDarkMode ? darkModeThemeClassName : lightModeThemeClassName
+      }
+    >
       <Block className={wrapperClassName} padding="2">
         <Block component="main" className={mainClassName}>
           <Block marginBlock="11" textAlign="center">
