@@ -62,12 +62,9 @@ export const App: FC = () => {
     [setJwt],
   );
 
-  const [, startTransition] = useTransition();
   const decodeAndSetJwt: typeof realDecodeAndSetJwt = useCallback(
     (...args) => {
-      startTransition(() => {
-        realDecodeAndSetJwt(...args);
-      });
+      realDecodeAndSetJwt(...args);
     },
     [realDecodeAndSetJwt],
   );
@@ -131,10 +128,10 @@ export const App: FC = () => {
               id="jwt"
               autoFocus
               spellCheck={false}
-              value={jwt}
               className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
-              onChange={(e) => decodeAndSetJwt(e.currentTarget.value.trim())}
+              value={jwt}
+              onChange={(e) => decodeAndSetJwt(e.currentTarget.value)}
             />
           </Block>
 
@@ -155,9 +152,9 @@ export const App: FC = () => {
             <AutoResizeTextArea
               id="header"
               spellCheck={false}
-              value={header || ''}
               className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
+              value={header || ''}
               onChange={(e) => setHeaderAndEncode(e.currentTarget.value)}
             />
           </Block>
@@ -178,9 +175,9 @@ export const App: FC = () => {
             <AutoResizeTextArea
               id="payload"
               spellCheck={false}
-              value={payload || ''}
               className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
+              value={payload || ''}
               onChange={(e) => setPayloadAndEncode(e.currentTarget.value)}
             />
           </Block>

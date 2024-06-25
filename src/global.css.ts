@@ -1,4 +1,9 @@
-import { tokens, vars } from '@block65/react-design-system/vanilla-extract';
+import {
+  type CSSVarFunction,
+  type MapLeafNodes,
+  tokens,
+  vars,
+} from '@block65/react-design-system/vanilla-extract';
 import {
   createGlobalTheme,
   createTheme,
@@ -21,16 +26,27 @@ globalStyle('body', {
   height: '100%',
 });
 
-globalStyle(`::selection`, {
-  backgroundColor: vars.base.color.brand,
-  color: 'white',
-});
+const darkThemeBaseColorTokens = {
+  ...tokens.base.color,
+  brand: '#f200a1',
+  accent: vars.base.color.brand,
+  bgColor: '#151515',
+  fgColor: '#f0f0f0',
+  borderColor: '#666',
+  muted: {
+    ...tokens.base.color.muted,
+    borderColor: '#333',
+  },
+} satisfies MapLeafNodes<typeof vars.base.color, CSSVarFunction | string>;
 
 createGlobalTheme(
-  ':root',
+  'html',
   vars,
   defaults(
     {
+      base: {
+        color: darkThemeBaseColorTokens,
+      },
       text: {
         size: {
           '5': {
@@ -43,6 +59,7 @@ createGlobalTheme(
           fontWeight: tokens.text.fontWeight.medium,
           rest: {
             fgColor: tokens.base.color.brand,
+            textDecoration: 'underline',
           },
         },
       },
@@ -58,18 +75,15 @@ createGlobalTheme(
   ),
 );
 
-export const darkModeThemeClassName = createTheme(vars.base.color, {
-  ...tokens.base.color,
-  brand: '#f200a1',
-  accent: vars.base.color.brand,
-  bgColor: '#151515',
-  fgColor: '#f0f0f0',
-  borderColor: '#666',
-  muted: {
-    ...tokens.base.color.muted,
-    borderColor: '#333',
-  },
+globalStyle(`::selection`, {
+  backgroundColor: vars.base.color.brand,
+  color: 'white',
 });
+
+export const darkModeThemeClassName = createTheme(
+  vars.base.color,
+  darkThemeBaseColorTokens,
+);
 
 export const lightModeThemeClassName = createTheme(vars.base.color, {
   ...tokens.base.color,
@@ -80,6 +94,7 @@ export const lightModeThemeClassName = createTheme(vars.base.color, {
   borderColor: '#999',
   muted: {
     ...tokens.base.color.muted,
+    fgColor: '#676d73',
     borderColor: '#ccc',
   },
 });
