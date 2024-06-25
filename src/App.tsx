@@ -48,7 +48,7 @@ export const App: FC = () => {
         // eslint-disable-next-line no-console
         console.warn(err);
       }
-      setJwt(value);
+      setJwt(value.replaceAll(/\n|\s/g, ''));
     },
     [setJwt],
   );
@@ -99,7 +99,7 @@ export const App: FC = () => {
       <Block className={styles.wrapper} padding="2">
         <Block component="main" className={styles.main}>
           <Block marginBlock="11" textAlign="center">
-            <Heading level="1" fontSize="6" className={styles.title}>
+            <Heading level="1" className={styles.title}>
               jwt.one
             </Heading>
             <Paragraph secondary textWrap="pretty">
@@ -109,7 +109,7 @@ export const App: FC = () => {
 
           <Panel className={styles.card}>
             <label htmlFor="jwt">
-              <Heading level="2" fontSize="3">
+              <Heading level="2" fontSize="2" fontWeight="medium">
                 JWT
               </Heading>
             </label>
@@ -126,7 +126,7 @@ export const App: FC = () => {
           <Block className={styles.card}>
             <label htmlFor="header">
               <Inline>
-                <Heading level="2" fontSize="3">
+                <Heading level="2" fontSize="2" fontWeight="medium">
                   Header
                 </Heading>
                 {header === null && (
@@ -145,7 +145,7 @@ export const App: FC = () => {
           <Block className={styles.card}>
             <label htmlFor="payload">
               <Inline>
-                <Heading level="2" fontSize="3">
+                <Heading level="2" fontSize="2" fontWeight="medium">
                   Payload
                 </Heading>
                 {payload === null && (
@@ -164,7 +164,7 @@ export const App: FC = () => {
           <Block className={styles.card}>
             <label htmlFor="signature">
               <Inline>
-                <Heading level="2" fontSize="3">
+                <Heading level="2" fontSize="2">
                   Signature
                 </Heading>
                 {signature === null && (

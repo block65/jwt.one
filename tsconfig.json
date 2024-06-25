@@ -1,6 +1,7 @@
 {
   "extends": ["@tsconfig/strictest", "@tsconfig/vite-react"],
   "compilerOptions": {
+    "lib": ["es2021", "dom"],
     "noPropertyAccessFromIndexSignature": false
   },
   "exclude": ["./dist", "./build", "node_modules"]

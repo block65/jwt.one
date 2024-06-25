@@ -11,7 +11,7 @@
     grid-area: 1/1;
 
     .title {
-      color: var(--brand);
+      color: var(--base-color-brand);
     }
 
     .card {
@@ -19,8 +19,9 @@
         grid-area: 1/1;
       }
 
-      border: 1px solid var(--color-muted-borderColor);
-      border-radius: 0.25rem;
+      border: var(--formControl-outline-width) solid
+        var(--base-color-muted-borderColor);
+      border-radius: var(--base-border-radius);
       transition: color 0.15s ease, border-color 0.15s ease;
       padding: 0;
 
@@ -28,13 +29,13 @@
       &:focus,
       &:focus-within,
       &:active {
-        border-color: var(--color-muted-borderColor);
+        border-color: var(--base-color-borderColor);
       }
 
       label {
         padding: 1rem 1rem 0;
         display: block;
-        color: var(--brand);
+        color: var(--base-color-brand);
       }
 
       .input {
@@ -44,7 +45,7 @@
         font-weight: 400;
         font-style: normal;
 
-        color: var(--color-fgColor);
+        color: var(--base-color-fgColor);
 
         width: 100%;
         padding: 0 1rem 0.5em;
@@ -57,7 +58,7 @@
         resize: vertical;
 
         &::placeholder {
-          color: var(--color-muted-fgColor);
+          color: var(--base-color-muted-fgColor);
         }
 
         &.jwt,

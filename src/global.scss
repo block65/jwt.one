@@ -1,12 +1,12 @@
-@use '@block65/react-design-system/scss/capsize' as inter with (
-  $font-metrics: (
-    capHeight: 2048,
-    ascent: 2728,
-    descent: -680,
-    lineGap: 0,
-    unitsPerEm: 2816,
-  )
-);
+// @use '@block65/react-design-system/scss/capsize' as inter with (
+//   $font-metrics: (
+//     capHeight: 2048,
+//     ascent: 2728,
+//     descent: -680,
+//     lineGap: 0,
+//     unitsPerEm: 2816,
+//   )
+// );
 
 html {
   height: 100%;
@@ -17,62 +17,49 @@ html {
     width: 100vw;
     max-width: 100%;
     height: 100%;
-    color: var(--fgColor-default);
   }
 
-  ::selection {
-    background-color: var(--brand);
-    color: white;
-  }
+  // ::selection {
+  //   background-color: var(--base-color-brand);
+  //   color: white;
+  // }
 
-  font-family: 'Inter', sans-serif;
-  font-optical-sizing: auto;
-  line-height: var(--text-lineHeight-regular);
-  font-style: normal;
-  font-variation-settings: 'slnt' 0;
+  // font-family: 'Inter', sans-serif;
+  // font-optical-sizing: auto;
+  // line-height: var(--text-lineHeight-normal);
+  // font-style: normal;
+  // font-variation-settings: 'slnt' 0;
 
-  --text-fontWeight-bold: 700;
-  --text-fontWeight-semibold: 600;
-  --text-fontWeight-medium: 500;
-  --text-fontWeight-regular: 400;
-  --text-fontWeight-light: 300;
+  // @include inter.capsize(6, 60px, 42px);
+  // // @include inter.capsize(5, 32px, 35px);
+  // // @include inter.capsize(4, 24px, 25px);
+  // @include inter.capsize(3, 20px, 22px);
+  // // @include inter.capsize(2, 17.6px, 20px);
+  // @include inter.capsize(1, 16px, 20px);
+  // @include inter.capsize(0, 14px, 17px);
+  // // @include inter.capsize('00', 12px, 14px);
 
-  --text-letterSpacing-tight: -0.05em;
+  // // RDS
+  // --brand: #cc0088;
 
-  --text-lineHeight-regular: initial;
-  --text-lineHeight-paragraph: 1.6;
-  --text-lineHeight-heading: 1.3;
+  // --color-accent: #cc0088;
 
-  @include inter.capsize(6, 60px, 42px);
-  // @include inter.capsize(5, 32px, 35px);
-  // @include inter.capsize(4, 24px, 25px);
-  @include inter.capsize(3, 20px, 22px);
-  // @include inter.capsize(2, 17.6px, 20px);
-  @include inter.capsize(1, 16px, 20px);
-  @include inter.capsize(0, 14px, 17px);
-  // @include inter.capsize('00', 12px, 14px);
+  // &[data-color-scheme='dark'],
+  // &:not([data-color-scheme]) {
+  //   color-scheme: dark;
+  //   --color-bgColor: #111;
+  //   --color-fgColor: #fff;
+  //   --color-muted-fgColor: #aaa;
+  //   --color-muted-borderColor: #666;
 
-  // RDS
-  --brand: #cc0088;
+  //   // @include rds.tokens($borderWidth: 99px);
+  // }
 
-  --color-accent: #cc0088;
-
-  &[data-color-scheme='dark'],
-  &:not([data-color-scheme]) {
-    color-scheme: dark;
-    --color-bgColor: #111;
-    --color-fgColor: #fff;
-    --color-muted-fgColor: #aaa;
-    --color-muted-borderColor: #666;
-
-    // @include rds.tokens($borderWidth: 99px);
-  }
-
-  &[data-color-scheme='light'] {
-    color-scheme: light;
-    --color-bgColor: #fff;
-    --color-fgColor: #333;
-    --color-muted-fgColor: #757575;
-    --color-muted-borderColor: #ccc;
-  }
+  // &[data-color-scheme='light'] {
+  //   color-scheme: light;
+  //   --color-bgColor: #fff;
+  //   --color-fgColor: #333;
+  //   --color-muted-fgColor: #757575;
+  //   --color-muted-borderColor: #ccc;
+  // }
 }

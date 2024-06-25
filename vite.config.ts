@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import hash from '@emotion/hash';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import react from '@vitejs/plugin-react';
@@ -12,13 +11,6 @@ export default defineConfig((config) => ({
     target: 'es2022',
 
     rollupOptions: {
-      output: {
-        manualChunks(id) {
-          // experimenting with manual chunks and hashing
-          // keen to see the impact of this in the field
-          return createHash('sha256').update(id).digest('base64url');
-        },
-      },
       plugins: [visualizer()],
     },
   },
