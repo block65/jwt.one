@@ -11,13 +11,7 @@ import {
   useColorSchemeEffect,
   useLocalStorageState,
 } from '@block65/react-design-system/hooks';
-import {
-  type FC,
-  useCallback,
-  useEffect,
-  useState,
-  useTransition,
-} from 'react';
+import { type FC, useCallback, useState } from 'react';
 import { AutoResizeTextArea } from '../lib/AutoResizeTextArea.js';
 import {
   breakyWordyClassName,
@@ -29,11 +23,32 @@ import {
   titleClassName,
   wrapperClassName,
 } from './app.css.js';
-import { encodeObject, parseJwt, tryNormalise } from './common.js';
+import {
+  encodeObject,
+  type Jwt,
+  parseJwt,
+  tryNormal,
+  tryPretty,
+} from './common.js';
 import {
   darkModeThemeClassName,
   lightModeThemeClassName,
 } from './global.css.js';
+
+function useStatePartial<T>(initialState: T | (() => T)) {
+  const [state, setState] = useState(initialState);
+  const setPartialState = useCallback(
+    (partialState: Partial<T> | ((previous: T) => T)) => {
+      setState((s) =>
+        typeof partialState === 'function'
+          ? partialState(s)
+          : { ...s, ...partialState },
+      );
+    },
+    [setState],
+  );
+  return [state, setPartialState] as const;
+}
 
 export const App: FC = () => {
   const [wantsDarkMode] = useColorSchemeEffect();
@@ -42,63 +57,100 @@ export const App: FC = () => {
     'jwt',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
   );
-  const [payload, setPayload] = useState<string | null>('');
-  const [header, setHeader] = useState<string | null>('');
-  const [signature, setSignature] = useState<string | null>('');
 
-  const realDecodeAndSetJwt = useCallback(
-    (value: string) => {
+  const [state, setState] = useStatePartial<Jwt>(() => {
+    const decoded = parseJwt(jwt);
+
+    return {
+      header: decoded.header,
+      payload: decoded.payload,
+      signature: decoded.signature,
+    };
+  });
+
+  const [prettyState, setPrettyState] = useStatePartial(() => ({
+    header: tryPretty(state.header),
+    payload: tryPretty(state.payload),
+  }));
+
+  const decodeAndSetJwt = useCallback(
+    (newJwt: string) => {
       try {
-        const decodedJwt = parseJwt(value);
-        setHeader(tryNormalise(decodedJwt?.header));
-        setPayload(tryNormalise(decodedJwt?.payload));
-        setSignature(tryNormalise(decodedJwt?.signature));
+        const decodedJwt = parseJwt(newJwt);
+        setState({
+          header: decodedJwt.header || null,
+          payload: decodedJwt.payload || null,
+          signature: decodedJwt.signature || null,
+        });
+        setPrettyState({
+          header: decodedJwt ? tryPretty(decodedJwt?.header) : '',
+          payload: decodedJwt ? tryPretty(decodedJwt?.payload) : '',
+        });
+
+        setJwt(newJwt.replaceAll(/\n|\s/g, ''));
       } catch (err) {
         // eslint-disable-next-line no-console
         console.warn(err);
       }
-      setJwt(value.replaceAll(/\n|\s/g, ''));
     },
-    [setJwt],
-  );
-
-  const decodeAndSetJwt: typeof realDecodeAndSetJwt = useCallback(
-    (...args) => {
-      realDecodeAndSetJwt(...args);
-    },
-    [realDecodeAndSetJwt],
+    [setJwt, setPrettyState, setState],
   );
 
   const setHeaderAndEncode = useCallback(
-    (value: string) => {
-      const normalized = tryNormalise(value);
-      setHeader(normalized);
-      setJwt(encodeObject({ header: normalized, payload, signature }));
+    (header: string) => {
+      const nextHeader = tryNormal(header);
+
+      setState({
+        header: nextHeader,
+      });
+      setJwt(
+        encodeObject({
+          header: nextHeader,
+          payload: state.payload,
+          signature: state.signature,
+        }),
+      );
+      setPrettyState({
+        header: tryPretty(nextHeader),
+      });
     },
-    [payload, setJwt, signature],
+    [setJwt, setPrettyState, setState, state.payload, state.signature],
   );
 
   const setPayloadAndEncode = useCallback(
-    (value: string) => {
-      const normalized = tryNormalise(value);
-      setPayload(normalized);
-      setJwt(encodeObject({ header, payload: normalized, signature }));
+    (payload: string) => {
+      const nextPayload = tryNormal(payload);
+
+      setJwt(
+        encodeObject({
+          header: state.header,
+          payload: nextPayload,
+          signature: state.signature,
+        }),
+      );
+      setState({
+        payload: nextPayload,
+      });
+      setPrettyState({
+        payload: tryPretty(nextPayload),
+      });
     },
-    [header, setJwt, signature],
+    [setJwt, setPrettyState, setState, state.header, state.signature],
   );
 
   const setSignatureAndEncode = useCallback(
-    (value: string) => {
-      setSignature(value);
-      setJwt(encodeObject({ header, payload, signature: value }));
+    (signature: string) => {
+      setState({ signature });
+      setJwt(
+        encodeObject({
+          header: state.header,
+          payload: state.payload,
+          signature,
+        }),
+      );
     },
-    [header, payload, setJwt],
+    [setJwt, setState, state.header, state.payload],
   );
-
-  // bootstrap
-  useEffect(() => {
-    decodeAndSetJwt(jwt);
-  }, [decodeAndSetJwt, jwt]);
 
   return (
     <DesignSystem
@@ -145,7 +197,7 @@ export const App: FC = () => {
                 Header
               </Heading>
 
-              {header === null && (
+              {prettyState.header === null && (
                 <Badge variant="attention">Unparseable</Badge>
               )}
             </Inline>
@@ -154,7 +206,7 @@ export const App: FC = () => {
               spellCheck={false}
               className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
-              value={header || ''}
+              value={prettyState.header || ''}
               onChange={(e) => setHeaderAndEncode(e.currentTarget.value)}
             />
           </Block>
@@ -168,7 +220,7 @@ export const App: FC = () => {
                 Payload
               </Heading>
 
-              {payload === null && (
+              {prettyState.payload === null && (
                 <Badge variant="attention">Unparseable</Badge>
               )}
             </Inline>
@@ -177,7 +229,7 @@ export const App: FC = () => {
               spellCheck={false}
               className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
-              value={payload || ''}
+              value={prettyState.payload || ''}
               onChange={(e) => setPayloadAndEncode(e.currentTarget.value)}
             />
           </Block>
@@ -191,14 +243,11 @@ export const App: FC = () => {
               <Heading level="2" fontSize="2" fontWeight="medium">
                 Signature
               </Heading>
-              {signature === null && (
-                <Badge variant="attention">Unparseable</Badge>
-              )}
             </Inline>
             <AutoResizeTextArea
               id="signature"
               spellCheck={false}
-              value={signature || ''}
+              value={state.signature || ''}
               className={[inputClassName, breakyWordyClassName]}
               placeholder="Empty"
               onChange={(e) => setSignatureAndEncode(e.currentTarget.value)}

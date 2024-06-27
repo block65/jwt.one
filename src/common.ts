@@ -3,10 +3,10 @@ import {
   encode as encodeBase64Url,
 } from 'universal-base64url';
 
-type Jwt = {
-  header?: string | null;
-  payload?: string | null;
-  signature?: string | null;
+export type Jwt = {
+  header?: string | null | undefined;
+  payload?: string | null | undefined;
+  signature?: string | null | undefined;
 };
 
 function createObject<T>(obj: T): T {
@@ -26,34 +26,19 @@ function tryDecodeJwtPart(value: string): string | null {
 
 export function encodeObject(obj: Jwt) {
   return [
-    obj.header && encodeBase64Url(obj.header),
-    obj.payload && encodeBase64Url(obj.payload),
+    (obj.header && encodeBase64Url(obj.header)) || '',
+    (obj.payload && encodeBase64Url(obj.payload)) || '',
     obj.signature,
-  ]
-    .filter(Boolean)
-    .join('.');
+  ].join('.');
 }
 
-export function parseJwt(jwt: string): Jwt | null {
+export function parseJwt(jwt: string): Jwt {
   if (!jwt) {
     return {};
   }
 
   const [encodedHeader = '', encodedPayload = '', signature = ''] =
     jwt.split('.');
-
-  if (!encodedPayload && !signature) {
-    return createObject({
-      payload: tryDecodeJwtPart(encodedHeader),
-    });
-  }
-
-  if (!signature) {
-    return createObject({
-      header: tryDecodeJwtPart(encodedHeader),
-      payload: tryDecodeJwtPart(encodedPayload),
-    });
-  }
 
   return createObject({
     header: tryDecodeJwtPart(encodedHeader),
@@ -62,12 +47,23 @@ export function parseJwt(jwt: string): Jwt | null {
   });
 }
 
-export function tryNormalise(value: string | null | undefined): string | null {
+export function tryPretty(value: string | null | undefined): string | null {
   if (!value) {
     return value === null ? null : '';
   }
   try {
     return JSON.stringify(JSON.parse(value), null, 2);
+  } catch (err) {
+    return value;
+  }
+}
+
+export function tryNormal(value: string | null | undefined): string | null {
+  if (!value) {
+    return value === null ? null : '';
+  }
+  try {
+    return JSON.stringify(JSON.parse(value));
   } catch (err) {
     return value;
   }
